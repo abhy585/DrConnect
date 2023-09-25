@@ -12,11 +12,13 @@ import {
     Link,
     Stack,
     Text,
+    useToast,
   } from '@chakra-ui/react'
   import { Logo } from '../Logo'
   //import { OAuthButtonGroup } from '../OAuthButtonGroup'
   //import { PasswordField } from '../PasswordField'
 import { useState } from 'react';
+import { UnlockIcon } from '@chakra-ui/icons';
 
 
   
@@ -24,6 +26,31 @@ import { useState } from 'react';
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+
+    const toast  = useToast();
+    const showToastSuccess = () =>{
+    toast({
+      title: "Successfull",
+      description: "Account created Successfully",
+      duration: 5000,
+      isClosable: true,
+      status: 'success',
+      position: 'top',   // default is bottom
+      icon: <UnlockIcon/>
+    })
+  }
+
+  const showToastFailed = () =>{
+    toast({
+      title: "Failed",
+      description: "Email/Username should be unique",
+      duration: 5000,
+      isClosable: true,
+      status: 'success',
+      position: 'top',   // default is bottom
+      icon: <UnlockIcon/>
+    })
+  }
     async function register(ev) {
     ev.preventDefault();
     const response = await fetch('http://localhost:4000/signup', {
@@ -32,9 +59,9 @@ import { useState } from 'react';
       headers: {'Content-Type':'application/json'},
     });
     if (response.status === 200) {
-      alert('registration successful');
+      showToastSuccess();
     } else {
-      alert('registration failed');
+      showToastFailed();
     }
   }  
 
