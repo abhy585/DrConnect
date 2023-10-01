@@ -21,12 +21,13 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UnlockIcon } from "@chakra-ui/icons";
 import { properties } from "../properties";
+import { useAuth } from "../AuthContext";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const [accessToken, setAccessToken] = useState();
+  const { token, login, logout } = useAuth();
 
   const toast = useToast();
   const showToast = () => {
@@ -41,10 +42,8 @@ export default function Login() {
     });
   };
 
-  async function login(ev) {
+  async function Login(ev) {
     ev.preventDefault();
-    console.log(username);
-    console.log(password);
 
     const url = `${properties.base_url}/tenants/${properties.tenant_id}/oauth2/token`;
     const requestOptions = {
@@ -65,13 +64,11 @@ export default function Login() {
       .then((response) => response.json())
       .catch((error) => console.error("Error: ", error));
 
-    console.log(response.status);
     if (response.status === "approved") {
-      //  alert('login successful');
-      setAccessToken(response.access_token);
       showToast();
+      // login(response.access_token);
       setRedirect(true);
-      console.log(response.access_token);
+      login(response.access_token);
     } else {
       alert("wrong credentials");
     }
@@ -139,7 +136,7 @@ export default function Login() {
             <Stack spacing="6">
               <Stack spacing="5">
                 <FormControl>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <Input
                     value={username}
                     onChange={(ev) => setUsername(ev.target.value)}
@@ -162,7 +159,7 @@ export default function Login() {
                 </Button>
               </HStack>
               <Stack spacing="6">
-                <Button onClick={login}>Sign in</Button>
+                <Button onClick={Login}>Sign in</Button>
                 <HStack>
                   <Divider />
 

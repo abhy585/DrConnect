@@ -14,20 +14,23 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const toast = useToast();
   const [username, setUsername] = useState(null);
+  const { token, login, logout } = useAuth();
+  const navigate = useNavigate();
+
   // const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch("http://localhost:4000/profile", {
-      credentials: "include",
-    }).then((response) => {
-      response.json().then((userInfo) => {
-        //setUserInfo(userInfo);
-        setUsername(userInfo.username);
-      });
-    });
+    if (token) {
+      const [header, payload, signature] = token.split(".");
+      const decodedPayload = JSON.parse(atob(payload));
+      const [firstName, lastName] = decodedPayload.name.split(" ");
+      setUsername(firstName);
+    }
   }, []);
 
   const showToast = () => {
@@ -42,15 +45,22 @@ export default function Navbar() {
     });
   };
 
-  function logout() {
+  function Logout() {
+    //const navigate = useNavigate();
     fetch("http://localhost:4000/logout", {
       credentials: "include",
       method: "POST",
+    }).then((response) => {
+      if (response.ok) {
+        logout();
+      }
     });
     setUsername(null);
     showToast();
+    navigate("/login");
   }
   //const username = userInfo?.username;
+
   return (
     <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="15px">
       <Heading as="h1">My Workflows</Heading>
@@ -67,7 +77,7 @@ export default function Navbar() {
 
       {username && (
         <>
-          <Button onClick={logout}>Logout ({username})</Button>
+          <Button onClick={Logout}>Logout ({username})</Button>
         </>
       )}
 
