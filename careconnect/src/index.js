@@ -1,31 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { AuthProvider } from "./AuthContext";
 
 const colors = {
   brand: {
     900: "#024fc9",
     800: "#146af5",
     700: "#2977f2",
-    600: "#337df2"
-  }
-}
+    600: "#337df2",
+  },
+};
 
 const fonts = {
   body: "system-ui, sans-serif",
   heading: "Georgia, serif",
-}
+};
 
-const theme = extendTheme({colors, fonts})
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const theme = extendTheme({ colors, fonts });
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-  <ChakraProvider theme={theme}>
-    <App />
-  </ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ChakraProvider>
   </React.StrictMode>
 );
 
