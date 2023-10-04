@@ -1,37 +1,11 @@
-import { AtSignIcon, EditIcon, EmailIcon, ViewIcon } from "@chakra-ui/icons";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Flex,
-  FormControl,
-  FormLabel,
-  HStack,
-  Heading,
-  Input,
-  List,
-  ListIcon,
-  ListItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  SimpleGrid,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
-import { useLoaderData } from "react-router";
-import BasicUsage from "../components/ModalDialog";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { AtSignIcon, EditIcon, EmailIcon, ViewIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormLabel, HStack, Heading, Input, List, ListIcon, ListItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Text, useDisclosure } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { useLoaderData } from 'react-router'
+import {  NavLink } from 'react-router-dom';
+import BasicUsage from '../components/ModalDialog';
+import io from "socket.io-client";
+import ChatBox from './ChatBox';
 //import InitialFocus from '../components/ModalDialog';
 
 function InitialFocus() {
@@ -67,14 +41,19 @@ export default function GridView() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const { token, login, logout } = useAuth();
 
-  useEffect(() => {
-    console.log("Hello", token);
-    if (token) {
-    } else {
+  const socket = io.connect("http://localhost:3002");
+
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("123");
+  const [showChat, setShowChat] = useState(false);
+
+  const joinRoom = () => {
+    if (username !== "" && room !== "") {
+      socket.emit("join_room", room);
+      setShowChat(true);
     }
-  }, []);
+  };
 
   return (
     <SimpleGrid spacing={10} minChildWidth="300px">
@@ -144,20 +123,25 @@ export default function GridView() {
                       </List>
                     </ModalBody>
 
-                    <ModalFooter>
-                      <Button variant="ghost" mr={3}>
-                        Connect
-                      </Button>
-                      <Button variantColor="blue" onClick={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </HStack>
-            </CardFooter>
-          </Card>
-        ))}
+                  <ModalFooter>
+                  <Button variant="ghost" mr={3} onClick={joinRoom}> <NavLink to="/connect">Connect </NavLink></Button>
+                    <Button variantColor="blue"  onClick={onClose}>
+                      Close
+                  </Button>
+                  {/* <ChatBox socket={socket} username={username} room={room} /> */}
+                    
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+
+            </HStack>
+          </CardFooter>
+        </Card>
+
+
+
+      ))}
+
     </SimpleGrid>
   );
 }
