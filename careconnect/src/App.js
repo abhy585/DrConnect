@@ -13,7 +13,6 @@ import Profile from "./pages/Profile";
 import GridView, { tasksLoader } from "./pages/Grid";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
-import ChatBox from "./pages/ChatBox";
 
 // router and routes
 const router = createBrowserRouter(
@@ -25,7 +24,6 @@ const router = createBrowserRouter(
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
-      <Route path="/connect/:username/:room" element={<ChatBox/>} />
     </Route>
   )
 );
