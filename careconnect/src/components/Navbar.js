@@ -77,6 +77,7 @@ export default function Navbar() {
 
       {username && (
         <>
+          <Button> <NavLink to="/upload">Upload a Medical Report </NavLink> </Button>
           <Button onClick={Logout}>Logout ({username})</Button>
         </>
       )}
