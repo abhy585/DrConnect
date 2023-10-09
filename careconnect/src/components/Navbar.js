@@ -75,9 +75,16 @@ export default function Navbar() {
         </AvatarBadge>
       </Avatar>
 
+      {username === "Patient" && (
+        <>
+          <Button>
+            {" "}
+            <NavLink to="/upload">Upload a Medical Report </NavLink>{" "}
+          </Button>
+        </>
+      )}
       {username && (
         <>
-          <Button> <NavLink to="/upload">Upload a Medical Report </NavLink> </Button>
           <Button onClick={Logout}>Logout ({username})</Button>
         </>
       )}

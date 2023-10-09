@@ -74,7 +74,13 @@ export default function Login() {
     }
   }
   if (redirect) {
-    return <Navigate to={"/grid"} />;
+    const [header, payload, signature] = token.split(".");
+    const decodedPayload = JSON.parse(atob(payload));
+    const [firstName, lastName] = decodedPayload.name.split(" ");
+
+    //return <Navigate to={"/grid"} />;
+    if (firstName === "Patient") return <Navigate to={"/grid"} />;
+    else return <Navigate to={"/patients"} />;
   } else {
     return (
       <Container
