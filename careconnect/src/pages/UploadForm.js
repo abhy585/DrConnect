@@ -9,11 +9,13 @@ import {
 import { Form, redirect } from "react-router-dom";
 import { Select } from "chakra-react-select";
 import { options } from "../properties";
+import { useAuth } from "../AuthContext";
 
-export default function DocumentForm() {
+export default function UploadForm() {
   const [document, setDocument] = useState("");
   const [files, setFiles] = useState("");
   const [value, setValue] = useState("");
+  const { token, login, logout } = useAuth();
 
   const handleClick = (ev) => {
     const data = new FormData();
@@ -21,11 +23,9 @@ export default function DocumentForm() {
     data.set("test", value);
     console.log(files[0]);
     console.log(value);
-
-    redirect("/grid");
   };
   return (
-    <Form method="post" action="/create" onSubmit={handleClick}>
+    <Form method="post" action="/uploadForm" onSubmit={handleClick}>
       <FormControl isRequired mb="40px">
         <FormLabel mx="2px" my="2px">
           Choose the type of Report:{" "}
@@ -58,3 +58,10 @@ export default function DocumentForm() {
     </Form>
   );
 }
+
+export const uploadFormAction = async ({ request }) => {
+  //const data = await request.formData();
+
+  //console.log(data);
+  return redirect("/grid");
+};

@@ -70,7 +70,7 @@ export default function GridView() {
   const { token, login, logout } = useAuth();
 
   useEffect(() => {
-    console.log("Hello", token);
+    //console.log("Hello", token);
     if (token) {
     } else {
     }
