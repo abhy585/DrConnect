@@ -79,7 +79,7 @@ export default function Navbar() {
         <>
           <Button>
             {" "}
-            <NavLink to="/upload">Upload a Medical Report </NavLink>{" "}
+            <NavLink to="/uploadForm">Upload a Medical Report </NavLink>{" "}
           </Button>
         </>
       )}

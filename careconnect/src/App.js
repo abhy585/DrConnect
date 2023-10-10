@@ -13,7 +13,7 @@ import Profile from "./pages/Profile";
 import GridView, { tasksLoader } from "./pages/Grid";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
-import DocumentForm from "./pages/DocumentUploadForm";
+import UploadForm, { uploadFormAction } from "./pages/UploadForm";
 import Patients, { patientsLoader } from "./pages/patients";
 
 // router and routes
@@ -27,7 +27,11 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
       <Route path="patients" element={<Patients />} loader={patientsLoader} />
-      <Route path="upload" element={<DocumentForm />} />
+      <Route
+        path="uploadForm"
+        element={<UploadForm />}
+        action={uploadFormAction}
+      />
     </Route>
   )
 );
