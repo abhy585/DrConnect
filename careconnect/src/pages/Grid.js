@@ -30,7 +30,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 //import InitialFocus from '../components/ModalDialog';
 
@@ -63,11 +63,19 @@ function BasicUsage1() {
 }
 
 export default function GridView() {
+  const navigate = useNavigate();
   const tasks = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const { token, login, logout } = useAuth();
+
+  const handleClick = () => {
+    // Navigate to Page 2 when the button is clicked
+    // props.history.push('/page2');
+
+    navigate("/chatbox");
+  };
 
   useEffect(() => {
     //console.log("Hello", token);
@@ -145,7 +153,7 @@ export default function GridView() {
                     </ModalBody>
 
                     <ModalFooter>
-                      <Button variant="ghost" mr={3}>
+                      <Button variant="ghost" onClick={handleClick} mr={3}>
                         Connect
                       </Button>
                       <Button variantColor="blue" onClick={onClose}>

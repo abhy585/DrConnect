@@ -15,6 +15,7 @@ import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import UploadForm, { uploadFormAction } from "./pages/UploadForm";
 import Patients, { patientsLoader } from "./pages/patients";
+import ChatBox from "./pages/ChatBox";
 
 // router and routes
 const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="profile" element={<Profile />} />
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
+      <Route path="chatbox" element={<ChatBox />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
       <Route path="patients" element={<Patients />} loader={patientsLoader} />
       <Route
