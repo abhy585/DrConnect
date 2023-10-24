@@ -1,10 +1,4 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
-
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 // layouts and pages
 import RootLayout from "./layouts/RootLayout";
 import Dashboard from "./pages/Dashboard";
@@ -13,9 +7,11 @@ import Profile from "./pages/Profile";
 import GridView, { tasksLoader } from "./pages/Grid";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
-import UploadForm, { uploadFormAction } from "./pages/UploadForm";
+import { uploadFormAction } from "./pages/DocumentUploadForm";
 import Patients, { patientsLoader } from "./pages/patients";
 import ChatBox from "./pages/ChatBox";
+import DocumentForm from "./pages/DocumentUploadForm";
+import ViewReport, { reportLoader } from "./pages/ViewReport";
 
 // router and routes
 const router = createBrowserRouter(
@@ -29,11 +25,8 @@ const router = createBrowserRouter(
       <Route path="chatbox" element={<ChatBox />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
       <Route path="patients" element={<Patients />} loader={patientsLoader} />
-      <Route
-        path="uploadForm"
-        element={<UploadForm />}
-        action={uploadFormAction}
-      />
+      <Route path="uploadform" element={<DocumentForm />} action={uploadFormAction} />
+      <Route path="report" element={<ViewReport />}  loader={reportLoader} />
     </Route>
   )
 );

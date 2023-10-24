@@ -86,23 +86,25 @@ export default function GridView() {
 
   return (
     <SimpleGrid spacing={10} minChildWidth="300px">
-      {tasks &&
-        tasks.map((task) => (
-          <Card key={task.id} borderTop="8px" borderColor="purple.600">
+      
+          <Card  borderTop="8px" borderColor="purple.600">
             <CardHeader>
               <Flex>
-                <Avatar src={task.img} />
+                <Avatar 
+                src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=900&t=st=1697997229~exp=1697997829~hmac=fae9e34e56f253907c029e46bb4fc31109d6b7c07cca30643daeed03ef4dde46" 
+                />
                 <Box>
                   <Heading as="h3" size="sm">
                     {" "}
-                    {task.title}{" "}
+                    Lorem, ipsum dolor.{" "}
                   </Heading>
-                  <Text> by {task.author} </Text>
+                  <Text> by Johnathan </Text>
                 </Box>
               </Flex>
             </CardHeader>
             <CardBody color="gray.500">
-              <Text> {task.description} </Text>
+              <Text> Lorem ipsum dolor sit amet consectetur 
+                adipisicing elit. Nisi tempore minima consequuntur quae. Totam officiis dolore dolorum. </Text>
             </CardBody>
             <CardFooter>
               <HStack>
@@ -119,7 +121,7 @@ export default function GridView() {
                 <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalOverlay />
                   <ModalContent>
-                    <ModalHeader>About {task.author} </ModalHeader>
+                    <ModalHeader>About Johnathan </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                       <List fontSize="1.2em" spacing={4}>
@@ -165,7 +167,7 @@ export default function GridView() {
               </HStack>
             </CardFooter>
           </Card>
-        ))}
+        
     </SimpleGrid>
   );
 }

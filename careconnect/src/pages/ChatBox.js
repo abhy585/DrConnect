@@ -74,7 +74,7 @@ function SignIn() {
       <button className="sign-in" onClick={signInWithGoogle}>
         Sign in with Google
       </button>
-      <p>
+      <p class="para">
         Do not violate the community guidelines or you will be banned for life!
       </p>
     </>
@@ -133,7 +133,7 @@ function ChatRoom() {
       </main>
 
       <form className="form-chat-box" onSubmit={sendMessage}>
-        <input
+        <input class = "input"
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder="say something nice"
@@ -162,7 +162,7 @@ function ChatMessage(props) {
             photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
           }
         />
-        <p>{text}</p>
+        <p class="para">{text}</p>
       </div>
     </>
   );
