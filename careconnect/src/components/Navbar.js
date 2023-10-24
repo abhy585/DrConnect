@@ -1,16 +1,5 @@
 import { UnlockIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  Heading,
-  Spacer,
-  Button,
-  Text,
-  useToast,
-  Avatar,
-  AvatarBadge,
-  Link,
-} from "@chakra-ui/react";
+import { Box,Flex,Heading,Spacer,Button,Text,useToast,Avatar,AvatarBadge,Link} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { NavLink } from "react-router-dom";
