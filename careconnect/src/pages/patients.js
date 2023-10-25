@@ -30,7 +30,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 //import InitialFocus from '../components/ModalDialog';
 
@@ -63,6 +63,7 @@ function BasicUsage1() {
 }
 
 export default function Patients() {
+  const navigate = useNavigate();
   const tasks = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -75,6 +76,10 @@ export default function Patients() {
     } else {
     }
   }, []);
+
+  const handleClick = () => {
+    navigate("/chatbox");
+  };
 
   return (
     <SimpleGrid spacing={10} minChildWidth="300px">
@@ -145,7 +150,7 @@ export default function Patients() {
                     </ModalBody>
 
                     <ModalFooter>
-                      <Button variant="ghost" mr={3}>
+                      <Button variant="ghost" onClick={handleClick} mr={3}>
                         Connect
                       </Button>
                       <Button variantColor="blue" onClick={onClose}>

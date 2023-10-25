@@ -1,4 +1,9 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 // layouts and pages
 import RootLayout from "./layouts/RootLayout";
 import Dashboard from "./pages/Dashboard";
@@ -12,6 +17,7 @@ import Patients, { patientsLoader } from "./pages/patients";
 import ChatBox from "./pages/ChatBox";
 import DocumentForm from "./pages/DocumentUploadForm";
 import ViewReport, { reportLoader } from "./pages/ViewReport";
+import TestUpload from "./pages/testUpload";
 
 // router and routes
 const router = createBrowserRouter(
@@ -21,12 +27,17 @@ const router = createBrowserRouter(
       <Route path="create" element={<Create />} action={createAction} />
       <Route path="profile" element={<Profile />} />
       <Route path="signup" element={<Signup />} />
+      <Route path="testUpload" element={<TestUpload />} />
       <Route path="login" element={<Login />} />
       <Route path="chatbox" element={<ChatBox />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
       <Route path="patients" element={<Patients />} loader={patientsLoader} />
-      <Route path="uploadform" element={<DocumentForm />} action={uploadFormAction} />
-      <Route path="report" element={<ViewReport />}  loader={reportLoader} />
+      <Route
+        path="uploadform"
+        element={<DocumentForm />}
+        action={uploadFormAction}
+      />
+      <Route path="report" element={<ViewReport />} loader={reportLoader} />
     </Route>
   )
 );
