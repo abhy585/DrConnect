@@ -64,17 +64,19 @@ function ChatBox() {
 
 function SignIn() {
   const { token, login, logout } = useAuth();
-  const [header, payload, signature] = token.split(".");
-  const decodedPayload = JSON.parse(atob(payload));
-  const [firstName, lastName] = decodedPayload.name.split(" ");
   let email = "";
   let password = "";
-  if (firstName === "Patient") {
-    email = "patientconnect001@gmail.com";
-    password = "Patientconnect@001";
-  } else {
-    email = "doctorconnect001@gmail.com";
-    password = "Doctorconnect@001";
+  if (token) {
+    const [header, payload, signature] = token.split(".");
+    const decodedPayload = JSON.parse(atob(payload));
+    const [firstName, lastName] = decodedPayload.name.split(" ");
+    if (firstName === "Patient") {
+      email = "patientconnect001@gmail.com";
+      password = "Patientconnect@001";
+    } else {
+      email = "doctorconnect001@gmail.com";
+      password = "Doctorconnect@001";
+    }
   }
   const signInWithGoogle = () => {
     console.log("Current Token: ", token);
