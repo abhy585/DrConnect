@@ -26,7 +26,6 @@ const analytics = firebase.analytics();
 
 function ChatBox() {
   const [user] = useAuthState(auth);
-  const { token, login, logout } = useAuth();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -64,19 +63,32 @@ function ChatBox() {
 }
 
 function SignIn() {
+  const { token, login, logout } = useAuth();
+  let email = "";
+  let password = "";
+  if (token) {
+    const [header, payload, signature] = token.split(".");
+    const decodedPayload = JSON.parse(atob(payload));
+    const [firstName, lastName] = decodedPayload.name.split(" ");
+    if (firstName === "Patient") {
+      email = "patientconnect001@gmail.com";
+      password = "Patientconnect@001";
+    } else {
+      email = "doctorconnect001@gmail.com";
+      password = "Doctorconnect@001";
+    }
+  }
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    console.log("Current Token: ", token);
+    const provider = new firebase.auth.EmailAuthProvider();
+    auth.signInWithEmailAndPassword(email, password);
   };
 
   return (
     <>
       <button className="sign-in" onClick={signInWithGoogle}>
-        Sign in with Google
+        Connect Patient and Doctor
       </button>
-      <p class="para">
-        Do not violate the community guidelines or you will be banned for life!
-      </p>
     </>
   );
 }
@@ -133,7 +145,8 @@ function ChatRoom() {
       </main>
 
       <form className="form-chat-box" onSubmit={sendMessage}>
-        <input class = "input"
+        <input
+          class="input"
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder="say something nice"

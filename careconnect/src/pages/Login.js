@@ -64,6 +64,33 @@ export default function Login() {
       .then((response) => response.json())
       .catch((error) => console.error("Error: ", error));
 
+    const integerArray = [
+      1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+      0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1,
+    ];
+
+    const jsonObject = { input: integerArray };
+    console.log(jsonObject);
+
+    const url1 = `http://localhost:4000/api/predict`;
+    const requestOptions1 = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        input: integerArray,
+      }),
+    };
+
+    const response1 = await fetch(url1, requestOptions1)
+      .then((response) => response.json())
+      .catch((error) => console.error("Error: ", error));
+
     if (response.status === "approved") {
       showToast();
       // login(response.access_token);
