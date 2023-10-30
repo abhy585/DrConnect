@@ -11,11 +11,41 @@ import { Select } from "chakra-react-select";
 import { properties } from "../properties";
 import { list_symptoms, options } from "../properties";
 import { useAuth } from "../AuthContext";
+import Mailjet from "node-mailjet";
+import firebase from "firebase/compat/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+} from "firebase/firestore";
+
+const app = firebase.initializeApp({
+  apiKey: "AIzaSyCIRalKnTYNoWAgwkQ6n-w4CmLORYmhWBo",
+  authDomain: "chatbox-fe36a.firebaseapp.com",
+  projectId: "chatbox-fe36a",
+  storageBucket: "chatbox-fe36a.appspot.com",
+  messagingSenderId: "249794876908",
+  appId: "1:249794876908:web:66888abecbaa140e3e5cc9",
+  measurementId: "G-M0MNJMD9PD",
+});
+
+const db = getFirestore(app);
 
 export default function DocumentForm() {
+  const collectionRef = collection(db, "patientsData");
+
+  let newData = {
+    name: "Patient",
+    file_id: "",
+    file_name: "",
+    file_memetype: "",
+    disease_prediction: "",
+  };
   const [files, setFiles] = useState("");
+  const [Fileid, setFileid] = useState("");
   const [pdfFile, setPdfFile] = React.useState({
-    //file blob retrieved from Capture Service
     size: "",
     type: "",
   });
@@ -23,6 +53,7 @@ export default function DocumentForm() {
   const [value, setValue] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const { token, login, logout } = useAuth();
+
   const handleClick = async (ev) => {
     const data = new FormData();
     data.set("file", files[0]);
@@ -59,7 +90,17 @@ export default function DocumentForm() {
 
     setPdfFile(blob);
     console.log(pdfFile);
-    uploadFileToCSS();
+    newData.file_id = await uploadFileToCSS();
+    //retrieveFile();
+    newData.file_name = value;
+    newData.file_memetype = files[0].type;
+    newData.disease_prediction = response1[0];
+    try {
+      const docRef = await addDoc(collectionRef, newData);
+      console.log("Document added with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
   function getBlobFromFile(file) {
@@ -80,6 +121,47 @@ export default function DocumentForm() {
     });
   }
 
+  async function retrieveFile() {
+    const q = query(collectionRef);
+
+    try {
+      const querySnapshot = await getDocs(collectionRef);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        if (data.name === "Patient") {
+          console.log("Document ID: ", doc.id);
+          console.log("Document File Id: ", data.file_id);
+        }
+      });
+    } catch (e) {
+      console.error("Error retrieving documents: ", e);
+    }
+
+    const url = `${properties.css_url}/v2/content/cj0xNmNmNjU0OS1kNmUxLTQ2YjYtYWE2Yi1hZWI3OGRjYzNhMzcmaT1lZTcyMDE1ZS03NTllLTRlYTAtOWI0My05YmNlOWJkMTg5N2Y=/download?file-name=ghi12345.pdf&mime-type=application/pdf`;
+
+    const fetchOptions = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/octet-stream",
+      },
+    };
+
+    fetch(url, fetchOptions)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "ghi12345.pdf";
+        alink.click();
+        URL.revokeObjectURL(fileURL);
+      })
+      .catch((error) => console.error("Error: ", error));
+  }
+
   async function uploadFileToCSS() {
     const cssUrl = `${properties.css_url}/v2/tenant/${properties.tenant_id}/content`;
     const cssFetchOptions = {
@@ -98,7 +180,11 @@ export default function DocumentForm() {
       console.error("Fetch error:", error);
     });
     const data = await response.json();
-    console.log(data.entries[0]);
+    console.log(data.entries[0].id);
+    newData.file_id = data.entries[0].id;
+    console.log(newData.file_id);
+
+    return data.entries[0].id.toString();
   }
 
   function handleselect(data) {
