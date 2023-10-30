@@ -42,6 +42,7 @@ export default function DocumentForm() {
     file_name: "",
     file_memetype: "",
     disease_prediction: "",
+    patient_symptoms: "",
   };
   const [files, setFiles] = useState("");
   const [Fileid, setFileid] = useState("");
@@ -58,15 +59,12 @@ export default function DocumentForm() {
     const data = new FormData();
     data.set("file", files[0]);
     data.set("test", value);
-    console.log(files[0]);
-    console.log(value);
     //uploadFileToCSS();
     const symptoms_indexes = Array(132).fill(0);
     for (let i = 0; i < symptoms.length; i++) {
       let index = list_symptoms.indexOf(symptoms[i]);
       symptoms_indexes[index] = 1;
     }
-    console.log(symptoms_indexes);
 
     const url1 = `http://localhost:4000/api/predict`;
     const requestOptions1 = {
@@ -86,15 +84,14 @@ export default function DocumentForm() {
     console.log("Expected disease :", response1[0]);
 
     blob = await getBlobFromFile(files[0]);
-    console.log("Blob:", blob);
 
     setPdfFile(blob);
-    console.log(pdfFile);
     newData.file_id = await uploadFileToCSS();
     //retrieveFile();
     newData.file_name = value;
     newData.file_memetype = files[0].type;
     newData.disease_prediction = response1[0];
+    newData.patient_symptoms = symptoms;
     try {
       const docRef = await addDoc(collectionRef, newData);
       console.log("Document added with ID: ", docRef.id);
@@ -180,15 +177,15 @@ export default function DocumentForm() {
       console.error("Fetch error:", error);
     });
     const data = await response.json();
-    console.log(data.entries[0].id);
+    //console.log(data.entries[0].id);
     newData.file_id = data.entries[0].id;
-    console.log(newData.file_id);
+    //console.log(newData.file_id);
 
     return data.entries[0].id.toString();
   }
 
   function handleselect(data) {
-    console.log(data);
+    //console.log(data);
     setSymptoms(data);
   }
 
