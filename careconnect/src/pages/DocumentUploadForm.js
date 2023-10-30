@@ -42,6 +42,7 @@ export default function DocumentForm() {
     file_name: "",
     file_memetype: "",
     disease_prediction: "",
+    patient_symptoms: "",
   };
   const [files, setFiles] = useState("");
   const [Fileid, setFileid] = useState("");
@@ -95,6 +96,7 @@ export default function DocumentForm() {
     newData.file_name = value;
     newData.file_memetype = files[0].type;
     newData.disease_prediction = response1[0];
+    newData.patient_symptoms = symptoms;
     try {
       const docRef = await addDoc(collectionRef, newData);
       console.log("Document added with ID: ", docRef.id);
