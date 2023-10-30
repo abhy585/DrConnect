@@ -1,4 +1,4 @@
-import { AtSignIcon, EditIcon, EmailIcon, ViewIcon } from "@chakra-ui/icons";
+import { AtSignIcon, DownloadIcon, EditIcon, EmailIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -35,7 +35,24 @@ import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+import { properties } from "../properties";
+
 //import InitialFocus from '../components/ModalDialog';
+
+
+const app = firebase.initializeApp({
+  apiKey: "AIzaSyCIRalKnTYNoWAgwkQ6n-w4CmLORYmhWBo",
+  authDomain: "chatbox-fe36a.firebaseapp.com",
+  projectId: "chatbox-fe36a",
+  storageBucket: "chatbox-fe36a.appspot.com",
+  messagingSenderId: "249794876908",
+  appId: "1:249794876908:web:66888abecbaa140e3e5cc9",
+  measurementId: "G-M0MNJMD9PD",
+});
+
+const db = getFirestore(app);
 
 function InitialFocus() {
   <BasicUsage />;
@@ -65,7 +82,35 @@ function BasicUsage1() {
   );
 }
 
-export default function GridView() {
+async function retrieveFile(token,fileId) {
+  const collectionRef = collection(db, "patientsData");
+  const q = query(collectionRef);
+ 
+
+  const url = `${properties.css_url}/v2/content/${fileId}=/download?file-name=patient001report.pdf&mime-type=application/pdf`;
+
+  const fetchOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/octet-stream",
+    },
+  };
+
+  fetch(url, fetchOptions)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const fileURL = URL.createObjectURL(blob);
+      let alink = document.createElement("a");
+      alink.href = fileURL;
+      alink.download = "ghi12345.pdf";
+      alink.click();
+      URL.revokeObjectURL(fileURL);
+    })
+    .catch((error) => console.error("Error: ", error));
+}
+
+export default function PatientInfo() {
   const navigate = useNavigate();
   const tasks = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,21 +118,49 @@ export default function GridView() {
   const finalRef = React.useRef(null);
   const { token, login, logout } = useAuth();
 
+  const [disease, setDisease] = useState(null);
+  const [symptoms, setSymptoms] = useState([]);
+  const [data1, dataSet] = useState(null);
+  const [fileId, setFileId] = useState(null);
+  
   const handleClick = () => {
-    // Navigate to Page 2 when the button is clicked
-    // props.history.push('/page2');
-
     navigate("/chatbox");
   };
 
-  useEffect(() => {
-    //console.log("Hello", token);
-    if (token) {
-    } else {
+  const handleDownload = (token,fielId) => {
+    retrieveFile(token,fileId);
+  };
+
+   useEffect(() => {
+    const collectionRef = collection(db, "patientsData");
+    
+    try {
+      const snap = async () => {
+        const snap1 =  await getDocs(collectionRef); 
+        console.log(snap1);
+        snap1.forEach((doc) => {
+          const data = doc.data();
+          dataSet(data);
+          if (data.name === "Patient") {
+            setDisease(data.disease_prediction);
+            setSymptoms(data.patient_symptoms);
+            setFileId(data. file_id);
+          }
+         
+        });
+       }
+       const snaps = snap();   
+    } catch (e) {
+      console.error("Error retrieving documents: ", e);
     }
+
+    console.log(data1);
   }, []);
 
+ 
+
   return (
+
     <SimpleGrid spacing={10} minChildWidth="300px">
       
           <Card  borderTop="8px" borderColor="blue.800">
@@ -107,80 +180,23 @@ export default function GridView() {
             </CardHeader>
             <CardBody color="gray.500">
               <Text> 
-              Special Interest and Expertise:
-              Infectious Diseases,
-              HIV,
-              Critical Care,
-              Hypertension,
-              Geriatric Medicine,
-              Septicemia
+              Symptoms Given: 
+              {symptoms.map(symptom =>{
+                return (
+                  <div color ="blackAlpha.800">{symptom.value}</div>
+                );
+              })} 
               </Text>
+              <Text color="blackAlpha.800">Diseasse Predicted : {disease}</Text>
             </CardBody>
             <CardFooter>
               <HStack>
-                <Button
-                  variant="ghost"
-                  leftIcon={<ViewIcon />}
-                  onClick={onOpen}
-                >
-                  Read more
+                <Button onClick={handleDownload(token,fileId)} variant="ghost" leftIcon={<DownloadIcon />}  >
+                  Download
                 </Button>
                 <Button variant="ghost" leftIcon={<EditIcon />}>
                  <NavLink to = "/chatbox"> Connect </NavLink> 
                 </Button>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>About Johnathan </ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <List fontSize="1.2em" spacing={4}>
-                        <ListItem>
-                          <ListIcon as={EditIcon} color='blue.800' />
-                          Consultant Physician
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={EmailIcon} color='blue.800' />
-                          Email: doctorconnect001@gmail.com
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={LuTableProperties} color='blue.800' />
-                          Expertise: Fever and Infections, Sepsis
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={MdCastForEducation} color='blue.800' />
-                          Education Qualifications : MD (General Medicine)
-                        </ListItem>
-                        <ListItem>
-                        <ListIcon as={MdOutlineHomeRepairService} color='blue.800' />
-                        Services offered : 
-                        <OrderedList>
-                        <ListItem>
-                          <ListIcon as={MdCheckCircle} color='blue.800' />
-                          Infectious Diseases</ListItem>
-                        <ListItem>
-                          <ListIcon as={MdCheckCircle} color='blue.800' />
-                          Septicaemia
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={MdCheckCircle} color='blue.800' />
-                          Critical Care
-                        </ListItem>
-                      </OrderedList>
-                    </ListItem>
-                      </List>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button variant="ghost" onClick={handleClick} mr={3}>
-                        Connect
-                      </Button>
-                      <Button variantColor="blue" onClick={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
               </HStack>
             </CardFooter>
           </Card>

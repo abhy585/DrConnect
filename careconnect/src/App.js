@@ -18,6 +18,7 @@ import ChatBox from "./pages/ChatBox";
 import DocumentForm from "./pages/DocumentUploadForm";
 import ViewReport, { reportLoader } from "./pages/ViewReport";
 import TestUpload from "./pages/testUpload";
+import PatientInfo from "./pages/PatientInfo";
 
 // router and routes
 const router = createBrowserRouter(
@@ -30,13 +31,10 @@ const router = createBrowserRouter(
       <Route path="testUpload" element={<TestUpload />} />
       <Route path="login" element={<Login />} />
       <Route path="chatbox" element={<ChatBox />} />
+      <Route path="patient" element={<PatientInfo />} />
       <Route path="grid" element={<GridView />} loader={tasksLoader} />
       <Route path="patients" element={<Patients />} loader={patientsLoader} />
-      <Route
-        path="uploadform"
-        element={<DocumentForm />}
-        action={uploadFormAction}
-      />
+      <Route path="uploadform" element={<DocumentForm />} action={uploadFormAction} />
       <Route path="report" element={<ViewReport />} loader={reportLoader} />
     </Route>
   )

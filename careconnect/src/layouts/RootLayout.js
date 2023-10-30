@@ -11,7 +11,7 @@ export default function RootLayout() {
       <GridItem 
       as = "aside"
       colSpan={{base: 6, lg: 2, xl:1}}
-      bg="brand.800"
+      bg="blue.800"
       minHeight="100vh"
       p="20px"
       >

@@ -8,6 +8,9 @@ const User = require("./models/User");
 const cookieParser = require("cookie-parser");
 //const bodyParser = require("body-parser");
 const { spawn } = require("child_process");
+const multer = require('multer');
+const fs = require("fs");
+const uploadMiddleware = multer({dest: 'uploads'})
 
 const salt = bcrypt.genSaltSync(10);
 const secret = "asdfe45we45w345wegw345werjktjwertkj"; //random string
@@ -129,6 +132,12 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
+});
+
+app.post("/post", uploadMiddleware.single('file') ,(req, res) => {
+  const {originalname,path} = req.file;
+  fs.renameSync(path,path+'.pdf');
+  res.json({files:req.file});
 });
 
 app.listen(4000);

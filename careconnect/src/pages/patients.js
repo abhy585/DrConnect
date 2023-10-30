@@ -30,7 +30,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 //import InitialFocus from '../components/ModalDialog';
 
@@ -111,7 +111,7 @@ export default function Patients() {
                   Watch
                 </Button>
                 <Button variant="ghost" leftIcon={<EditIcon />}>
-                  Comment
+                   <NavLink to =  "/patient">Comment</NavLink>  
                 </Button>
                 <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalOverlay />

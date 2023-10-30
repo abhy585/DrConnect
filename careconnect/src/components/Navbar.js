@@ -52,8 +52,7 @@ export default function Navbar() {
 
   return (
     <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="15px">
-      <Heading as="h1">My Workflows</Heading>
-
+      
       <Spacer />
 
       <Avatar src="/img/mario.png">
