@@ -1,0 +1,18 @@
+{
+  "name": "drconnect",
+  "version": "1.0.0",
+  "description": "npm install\r npx json-server --watch data/db.json\r npm start",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "data": "cd careconnect && npm install && npx json-server --watch data/db.json",
+    "careconnect": "cd careconnect && npm install && npm start",
+    "api": "cd api && npm install && nodemon index.js",
+    "start": "concurrently \"npm run data\" \"npm run careconnect\" \"npm run api\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

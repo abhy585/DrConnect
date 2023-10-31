@@ -1,5 +1,16 @@
 import { UnlockIcon } from "@chakra-ui/icons";
-import { Box,Flex,Heading,Spacer,Button,Text,useToast,Avatar,AvatarBadge,Link} from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Spacer,
+  Button,
+  Text,
+  useToast,
+  Avatar,
+  AvatarBadge,
+  Link,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { NavLink } from "react-router-dom";
@@ -52,15 +63,10 @@ export default function Navbar() {
 
   return (
     <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="15px">
-      
       <Spacer />
 
       <Avatar src="/img/mario.png">
-        <AvatarBadge width="1.3em" bg="teal.400">
-          <Text fontSize="xs" color="white">
-            3
-          </Text>
-        </AvatarBadge>
+        <AvatarBadge width="1.3em" bg="teal.400"></AvatarBadge>
       </Avatar>
 
       {username === "Patient" && (
@@ -82,9 +88,6 @@ export default function Navbar() {
           <Button>
             {" "}
             <NavLink to="/login">Login </NavLink>{" "}
-          </Button>
-          <Button>
-            <NavLink to="/signup">Signup </NavLink>{" "}
           </Button>
         </>
       )}
