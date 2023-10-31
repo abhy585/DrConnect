@@ -167,7 +167,7 @@ export default function PatientInfo() {
             <CardHeader>
               <Flex>
                 <Avatar 
-                src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=900&t=st=1697997229~exp=1697997829~hmac=fae9e34e56f253907c029e46bb4fc31109d6b7c07cca30643daeed03ef4dde46" 
+                src="https://img.freepik.com/free-photo/cheerful-indian-businessman-smiling-closeup-portrait-jobs-career-campaign_53876-129416.jpg?w=1060&t=st=1698732195~exp=1698732795~hmac=f41f7012c4018dd200380da37d28aff238ef4cb98ecb35426734eec5e0e40f76" 
                 />
                 <Box>
                   <Heading as="h3" size="sm">
@@ -191,9 +191,6 @@ export default function PatientInfo() {
             </CardBody>
             <CardFooter>
               <HStack>
-                <Button onClick={handleDownload(token,fileId)} variant="ghost" leftIcon={<DownloadIcon />}  >
-                  Download
-                </Button>
                 <Button variant="ghost" leftIcon={<EditIcon />}>
                  <NavLink to = "/chatbox"> Connect </NavLink> 
                 </Button>
