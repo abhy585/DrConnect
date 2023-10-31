@@ -23,14 +23,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  OrderedList,
   SimpleGrid,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { MdCastForEducation, MdCheckCircle, MdOutlineHomeRepairService, MdSettings } from 'react-icons/md'
+import {LuTableProperties} from 'react-icons/lu'
 import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
-import { Navigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 //import InitialFocus from '../components/ModalDialog';
 
@@ -63,14 +66,22 @@ function BasicUsage1() {
 }
 
 export default function GridView() {
+  const navigate = useNavigate();
   const tasks = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const { token, login, logout } = useAuth();
 
+  const handleClick = () => {
+    // Navigate to Page 2 when the button is clicked
+    // props.history.push('/page2');
+
+    navigate("/chatbox");
+  };
+
   useEffect(() => {
-    console.log("Hello", token);
+    //console.log("Hello", token);
     if (token) {
     } else {
     }
@@ -78,23 +89,32 @@ export default function GridView() {
 
   return (
     <SimpleGrid spacing={10} minChildWidth="300px">
-      {tasks &&
-        tasks.map((task) => (
-          <Card key={task.id} borderTop="8px" borderColor="purple.600">
+      
+          <Card  borderTop="8px" borderColor="blue.800">
             <CardHeader>
               <Flex>
-                <Avatar src={task.img} />
+                <Avatar 
+                src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?w=900&t=st=1697997229~exp=1697997829~hmac=fae9e34e56f253907c029e46bb4fc31109d6b7c07cca30643daeed03ef4dde46" 
+                />
                 <Box>
                   <Heading as="h3" size="sm">
                     {" "}
-                    {task.title}{" "}
+                    Dr. Johnathan{" "}
                   </Heading>
-                  <Text> by {task.author} </Text>
+                  <Text> Dr. Johnathan is a Consultant General Physician at Yashoda Hospitals, Somajiguda. </Text>
                 </Box>
               </Flex>
             </CardHeader>
             <CardBody color="gray.500">
-              <Text> {task.description} </Text>
+              <Text> 
+              Special Interest and Expertise:
+              Infectious Diseases,
+              HIV,
+              Critical Care,
+              Hypertension,
+              Geriatric Medicine,
+              Septicemia
+              </Text>
             </CardBody>
             <CardFooter>
               <HStack>
@@ -103,49 +123,56 @@ export default function GridView() {
                   leftIcon={<ViewIcon />}
                   onClick={onOpen}
                 >
-                  Watch
+                  Read more
                 </Button>
                 <Button variant="ghost" leftIcon={<EditIcon />}>
-                  Comment
+                 <NavLink to = "/chatbox"> Connect </NavLink> 
                 </Button>
                 <Modal isOpen={isOpen} onClose={onClose}>
                   <ModalOverlay />
                   <ModalContent>
-                    <ModalHeader>About {task.author} </ModalHeader>
+                    <ModalHeader>About Johnathan </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                       <List fontSize="1.2em" spacing={4}>
                         <ListItem>
-                          <ListIcon as={EmailIcon} color="red.400" />
-                          Email: devanshchitransh@gmail.com
+                          <ListIcon as={EditIcon} color='blue.800' />
+                          Consultant Physician
                         </ListItem>
                         <ListItem>
-                          <ListIcon as={EditIcon} />
-                          Edit: Lorem ipsum dolor sit, amet consectetur
-                          adipisicing elit. Possimus nobis quasi ducimus.
+                          <ListIcon as={EmailIcon} color='blue.800' />
+                          Email: doctorconnect001@gmail.com
                         </ListItem>
                         <ListItem>
-                          <ListIcon as={AtSignIcon} />
-                          Profile Info: Lorem ipsum dolor sit amet consectetur
-                          adipisicing elit. Nisi, adipisci cum!
+                          <ListIcon as={LuTableProperties} color='blue.800' />
+                          Expertise: Fever and Infections, Sepsis
                         </ListItem>
                         <ListItem>
-                          <ListIcon as={AtSignIcon} />
-                          Doctor's history : Lorem ipsum dolor sit, amet
-                          consectetur adipisicing elit. Architecto cum
-                          perspiciatis modi atque dolores dolorum ipsum
-                          quibusdam soluta a? Aspernatur numquam excepturi,
-                          omnis inventore atque eum magni debitis. Debitis
-                          tempora, expedita suscipit voluptates neque veritatis
-                          minima, magni necessitatibus iusto asperiores sunt
-                          earum officiis sint totam! Perferendis ratione officia
-                          deserunt voluptatibus!
+                          <ListIcon as={MdCastForEducation} color='blue.800' />
+                          Education Qualifications : MD (General Medicine)
                         </ListItem>
+                        <ListItem>
+                        <ListIcon as={MdOutlineHomeRepairService} color='blue.800' />
+                        Services offered : 
+                        <OrderedList>
+                        <ListItem>
+                          <ListIcon as={MdCheckCircle} color='blue.800' />
+                          Infectious Diseases</ListItem>
+                        <ListItem>
+                          <ListIcon as={MdCheckCircle} color='blue.800' />
+                          Septicaemia
+                        </ListItem>
+                        <ListItem>
+                          <ListIcon as={MdCheckCircle} color='blue.800' />
+                          Critical Care
+                        </ListItem>
+                      </OrderedList>
+                    </ListItem>
                       </List>
                     </ModalBody>
 
                     <ModalFooter>
-                      <Button variant="ghost" mr={3}>
+                      <Button variant="ghost" onClick={handleClick} mr={3}>
                         Connect
                       </Button>
                       <Button variantColor="blue" onClick={onClose}>
@@ -157,7 +184,7 @@ export default function GridView() {
               </HStack>
             </CardFooter>
           </Card>
-        ))}
+        
     </SimpleGrid>
   );
 }

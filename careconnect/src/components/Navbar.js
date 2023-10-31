@@ -63,23 +63,17 @@ export default function Navbar() {
 
   return (
     <Flex as="nav" p="10px" mb="40px" alignItems="center" gap="15px">
-      <Heading as="h1">My Workflows</Heading>
-
       <Spacer />
 
       <Avatar src="/img/mario.png">
-        <AvatarBadge width="1.3em" bg="teal.400">
-          <Text fontSize="xs" color="white">
-            3
-          </Text>
-        </AvatarBadge>
+        <AvatarBadge width="1.3em" bg="teal.400"></AvatarBadge>
       </Avatar>
 
       {username === "Patient" && (
         <>
           <Button>
             {" "}
-            <NavLink to="/upload">Upload a Medical Report </NavLink>{" "}
+            <NavLink to="/uploadForm">Upload a Medical Report </NavLink>{" "}
           </Button>
         </>
       )}
@@ -94,9 +88,6 @@ export default function Navbar() {
           <Button>
             {" "}
             <NavLink to="/login">Login </NavLink>{" "}
-          </Button>
-          <Button>
-            <NavLink to="/signup">Signup </NavLink>{" "}
           </Button>
         </>
       )}

@@ -30,7 +30,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import BasicUsage from "../components/ModalDialog";
-import { Navigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 //import InitialFocus from '../components/ModalDialog';
 
@@ -63,6 +63,7 @@ function BasicUsage1() {
 }
 
 export default function Patients() {
+  const navigate = useNavigate();
   const tasks = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -76,6 +77,10 @@ export default function Patients() {
     }
   }, []);
 
+  const handleClick = () => {
+    navigate("/chatbox");
+  };
+
   return (
     <SimpleGrid spacing={10} minChildWidth="300px">
       {tasks &&
@@ -83,77 +88,30 @@ export default function Patients() {
           <Card key={task.id} borderTop="8px" borderColor="purple.600">
             <CardHeader>
               <Flex>
-                <Avatar src={task.img} />
-                <Box>
-                  <Heading as="h3" size="sm">
+                <Avatar src="https://img.freepik.com/free-photo/cheerful-indian-businessman-smiling-closeup-portrait-jobs-career-campaign_53876-129416.jpg?w=1060&t=st=1698732195~exp=1698732795~hmac=f41f7012c4018dd200380da37d28aff238ef4cb98ecb35426734eec5e0e40f76" />
+                <Box mt={"12px"} ml="12px">
+                  <Text as="h3" size="sm">
                     {" "}
-                    {task.title}{" "}
-                  </Heading>
-                  <Text> by {task.author} </Text>
+                    Patient001{" "}
+                  </Text>
+                 
                 </Box>
               </Flex>
             </CardHeader>
             <CardBody color="gray.500">
-              <Text> {task.description} </Text>
+              <Text> Patient001 has provided us the Symtoms and Medical reports. Click below to see medical reports </Text>
             </CardBody>
             <CardFooter>
               <HStack>
                 <Button
                   variant="ghost"
                   leftIcon={<ViewIcon />}
-                  onClick={onOpen}
                 >
-                  Watch
+                   <NavLink to = "/patient"> See full Details and reports </NavLink> 
                 </Button>
                 <Button variant="ghost" leftIcon={<EditIcon />}>
-                  Comment
+                   <NavLink to =  "/chatbox">Connect</NavLink>  
                 </Button>
-                <Modal isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>About {task.author} </ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <List fontSize="1.2em" spacing={4}>
-                        <ListItem>
-                          <ListIcon as={EmailIcon} color="red.400" />
-                          Email: devanshchitransh@gmail.com
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={EditIcon} />
-                          Edit: Lorem ipsum dolor sit, amet consectetur
-                          adipisicing elit. Possimus nobis quasi ducimus.
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={AtSignIcon} />
-                          Profile Info: Lorem ipsum dolor sit amet consectetur
-                          adipisicing elit. Nisi, adipisci cum!
-                        </ListItem>
-                        <ListItem>
-                          <ListIcon as={AtSignIcon} />
-                          Doctor's history : Lorem ipsum dolor sit, amet
-                          consectetur adipisicing elit. Architecto cum
-                          perspiciatis modi atque dolores dolorum ipsum
-                          quibusdam soluta a? Aspernatur numquam excepturi,
-                          omnis inventore atque eum magni debitis. Debitis
-                          tempora, expedita suscipit voluptates neque veritatis
-                          minima, magni necessitatibus iusto asperiores sunt
-                          earum officiis sint totam! Perferendis ratione officia
-                          deserunt voluptatibus!
-                        </ListItem>
-                      </List>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button variant="ghost" mr={3}>
-                        Connect
-                      </Button>
-                      <Button variantColor="blue" onClick={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
               </HStack>
             </CardFooter>
           </Card>
