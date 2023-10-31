@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { UnlockIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
   FormHelperText,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { Form, redirect } from "react-router-dom";
 import { Select } from "chakra-react-select";
@@ -34,6 +36,7 @@ const app = firebase.initializeApp({
 const db = getFirestore(app);
 
 export default function DocumentForm() {
+  const toast = useToast();
   const collectionRef = collection(db, "patientsData");
 
   let newData = {
@@ -54,6 +57,18 @@ export default function DocumentForm() {
   const [value, setValue] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const { token, login, logout } = useAuth();
+
+  const showToast = (id) => {
+    toast({
+      title: "Upload successful",
+      description: "Details uploaded with id " + id,
+      duration: 5000,
+      isClosable: true,
+      status: "success",
+      position: "top", // default is bottom
+      icon: <UnlockIcon />,
+    });
+  };
 
   const handleClick = async (ev) => {
     const data = new FormData();
@@ -94,6 +109,7 @@ export default function DocumentForm() {
     newData.patient_symptoms = symptoms;
     try {
       const docRef = await addDoc(collectionRef, newData);
+      showToast(docRef.id);
       console.log("Document added with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
