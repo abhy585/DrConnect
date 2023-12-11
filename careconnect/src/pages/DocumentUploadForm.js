@@ -70,6 +70,18 @@ export default function DocumentForm() {
     });
   };
 
+  const showToastError = () => {
+    toast({
+      title: "Error",
+      description: "Document upload failed with Exception",
+      duration: 5000,
+      isClosable: true,
+      status: "success",
+      position: "top", // default is bottom
+      icon: <UnlockIcon />,
+    });
+  };
+
   const handleClick = async (ev) => {
     const data = new FormData();
     data.set("file", files[0]);
@@ -107,6 +119,7 @@ export default function DocumentForm() {
     newData.file_memetype = files[0].type;
     newData.disease_prediction = response1[0];
     newData.patient_symptoms = symptoms;
+    if(newData.file_id){
     try {
       const docRef = await addDoc(collectionRef, newData);
       showToast(docRef.id);
@@ -114,6 +127,10 @@ export default function DocumentForm() {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+  }
+  else{
+    showToastError();
+  }
   };
 
   function getBlobFromFile(file) {
@@ -188,16 +205,34 @@ export default function DocumentForm() {
       body: blob,
     };
 
-    const response = await fetch(cssUrl, cssFetchOptions).catch((error) => {
+    // const response = await fetch(cssUrl, cssFetchOptions).catch((error) => {
+    //   // Handle errors here, including network errors or JSON parsing errors
+    //   console.error("Fetch error:", error);
+    // });
+    // const data = await response.json();
+
+    try {
+      const response = await fetch(cssUrl, cssFetchOptions);
+    
+      if (!response.ok) {
+        // Check if the response status is not OK (e.g., 404 Not Found)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    
+      const data = await response.json();
+      newData.file_id = data.entries[0].id;
+      // Process the data as needed
+      // console.log(data.entries[0].id);
+    } catch (error) {
       // Handle errors here, including network errors or JSON parsing errors
-      console.error("Fetch error:", error);
-    });
-    const data = await response.json();
+      console.error("Fetch error:", error.message);
+    }
+
     //console.log(data.entries[0].id);
-    newData.file_id = data.entries[0].id;
+    //newData.file_id = data.entries[0].id;
     //console.log(newData.file_id);
 
-    return data.entries[0].id.toString();
+    return newData.file_id.toString();
   }
 
   function handleselect(data) {
@@ -212,7 +247,7 @@ export default function DocumentForm() {
           Choose the type of Report
         </FormLabel>
         <Select options={options} onChange={(ev) => setValue(ev.value)}>
-          {" "}
+          {""}
         </Select>
         <FormHelperText>Enter a descriptive name</FormHelperText>
       </FormControl>
@@ -262,5 +297,6 @@ export const uploadFormAction = async ({ request }) => {
   //const data = await request.formData();
 
   //console.log(data);
-  return redirect("/grid");
+  //return redirect("/grid");
+  return 0;
 };
