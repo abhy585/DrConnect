@@ -16,7 +16,7 @@ export default function Profile() {
           <List fontSize="1.2em" spacing = {4}>
             <ListItem> 
                 <ListIcon as = {EmailIcon} color="red.400"/>
-                Email: devanshchitransh@gmail.com   
+                Email: patientconnect001@gmail.com
             </ListItem>
             <ListItem>
                 <ListIcon as = {EditIcon} />

@@ -31,12 +31,11 @@ export default function Navbar() {
       const [firstName, lastName] = decodedPayload.name.split(" ");
       setUsername(firstName);
     }
-  }, []);
+  },true);
 
   const showToast = () => {
     toast({
-      title: "Logged Out",
-      description: "pehli phursat mein nikal",
+      title: "Logging Out",
       duration: 5000,
       isClosable: true,
       status: "success",
